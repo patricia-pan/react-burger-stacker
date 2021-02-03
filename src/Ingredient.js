@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
 class Ingredient extends Component {
-    color = this.props.ingredient.color
     render() {
+        let color = this.props.ingredient.color
         // console.log('Ingredient.js color: ', this.color)
         return (
-            <div style={{color: this.color}}> 
+            <div style={{color: color}}> 
                 <form> 
                     <input 
                         type="hidden"
