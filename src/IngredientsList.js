@@ -13,6 +13,8 @@ class IngredientsList extends Component {
                 )
         })
         
+        // comment
+        
         return (
             <div>
                 {ingredients}
