@@ -1,10 +1,12 @@
+// https://github.com/WDI-SEA/react-burger-stacker
+
 import './App.css';
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import IngredientsList from './IngredientsList'
 import BurgerPane from './BurgerPane'
 
-class App extends Component {
-  ingredientOptions = [
+function App() {
+  const ingredientOptions = [
     {name: 'Kaiser Bun', color: 'saddlebrown'},
     {name: 'Sesame Bun', color: 'sandybrown'},
     {name: 'Gluten Free Bun', color: 'peru'},
@@ -19,54 +21,50 @@ class App extends Component {
     {name: 'Onion', color: 'lightyellow'}
   ]
 
-  state = {
-    burgerIngredients: [],
-    // burgerIngredients: [
-    //   {name: 'Kaiser Bun', color: 'saddlebrown'},
-    //   {name: 'Sesame Bun', color: 'sandybrown'},
-    //   {name: 'Gluten Free Bun', color: 'peru'},
-    //   {name: 'Lettuce Wrap', color: 'olivedrab'}
-    // ],
-    newItem: ''
-  }
+  const [burgerIngredients, setBurgerIngredients] = useState([])
+  const [newItem, setNewItem] = useState('')
 
-  clearBurger = (e) => {
+  const clearBurger = (e) => {
     console.log("Clear Burger is running!")
-    this.setState({
-      burgerIngredients: []
-    })
+    setBurgerIngredients([])
   }
 
-  newIngredientChange = (ingredient) => {
+  const newIngredientChange = (ingredient) => {
     console.log(ingredient)
-    this.setState( { newItem: ingredient },
-      this.addIngredient )
+    setNewItem(ingredient)
+    addIngredient(ingredient)
+    // setState( { newItem: ingredient },
+    //   this.addIngredient )
   }
 
-  addIngredient = (e) => {
-    let tempArray = this.state.burgerIngredients
+  const addIngredient = (newItem) => {
+    console.log("Adding ingredient", newItem)
+    let tempArray = burgerIngredients
     // tempArray.splice(0, 0, this.state.newItem)
     // console.log(tempArray)
     // tempArray.push(this.state.newItem)
-    tempArray.unshift(this.state.newItem)
-    this.setState({
-      // selectedIngredients: [this.state.newItem, ...this.state.selectedIngredients], // tempArray,
-      burgerIngredients: tempArray,
-      newItem: ''
-    })
+  
+    
+    // tempArray.unshift(newItem)
+    // setBurgerIngredients(tempArray) // This method didn't work for some reason, I had to use the spread operator.
+
+    setBurgerIngredients(burgerIngredients => [...burgerIngredients, newItem])
+    // Can also use setBurgerIngredients( burgerIngredients.concat(newItem) )
+    console.log("The burgerIngredients are", burgerIngredients)
+    // OR, setBurgerIngredients([...burgerIngredients, {name: e.target.innerText}])
+    setNewItem('')
   }
+  
+  return (
+    <div className="App"> 
 
-  render () {
-    return (
-      <div className="App"> 
+      <IngredientsList ingredients={ingredientOptions} newIngredientChange={newIngredientChange}/>
+    
+      <BurgerPane ingredients={burgerIngredients} clearBurger={clearBurger}/>
 
-        <IngredientsList ingredients={this.ingredientOptions} newIngredientChange={this.newIngredientChange}/>
-      
-        <BurgerPane ingredients={this.state.burgerIngredients} clearBurger={this.clearBurger}/>
-
-      </div>
-    )
-  }
+    </div>
+  )
+  
 }
 
 export default App;
